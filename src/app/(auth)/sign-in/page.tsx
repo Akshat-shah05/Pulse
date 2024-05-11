@@ -5,14 +5,12 @@ import { motion } from 'framer-motion'
 
 const page = () => {
     return (
-        <motion.div 
-            className = 'h-screen flex flex-row justify-center items-center bg-black'
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            transition={{duration: 2}}
-        >
-            <SignInForm />
-        </motion.div>
+        <>
+            <div className = 'h-screen flex flex-col justify-center items-center bg-black'>
+                <h1 className="bg-black text-6xl text-white flex flex-row justify-center item-center pb-10 text-red-100"> Welcome! Please Sign in </h1>
+                <SignInForm />
+            </div>
+        </>
     )
 }
 

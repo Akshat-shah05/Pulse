@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link";
 import GoogleSignInButton from "../GoogleSignInButton";
+import { useRouter } from "next/navigation";
 
 // Set Form Schema so that we have the correc types for everything
 const FormSchema = z
@@ -39,6 +40,7 @@ const FormSchema = z
 
 // SignUp Form Component --> Takes no props
 const SignUpForm = () => {
+    const router = useRouter()
     // useForm
     // Recall --> Zod is a schema verification library --> z.infer<typeof FormSchema> tells useForm the schema
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -53,8 +55,25 @@ const SignUpForm = () => {
     })
 
     // handle submits - add auth here
-    const onSubmit = (values: z.infer<typeof FormSchema>) => {
-        console.log(values);
+    const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+        const response = await fetch('/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: values.username,
+                email: values.email,
+                password: values.password
+            })
+        })
+
+        if (response.ok) {
+            router.push('/sign-in')
+        } else {
+            console.error("Registration failed")
+        }
+
     };
 
     return (
@@ -137,7 +156,7 @@ const SignUpForm = () => {
                 </div>
                 <GoogleSignInButton>Sign up with Google</GoogleSignInButton>
                 <p className='text-center text-red-100 text-sm text-gray-600 mt-2'>
-                    If you don&apos;t have an account, please&nbsp;
+                    If you have an account, please&nbsp;
                     <Link className='text-blue-500 hover:underline' href='/sign-in'>
                     Sign in
                     </Link>
