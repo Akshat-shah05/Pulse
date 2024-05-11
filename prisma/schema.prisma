@@ -13,6 +13,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Whenever this schema is changed ensure you run: prisma migrate dev or prisma db push
+// This will keep your database schema in sync with your Prisma schema
 model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
