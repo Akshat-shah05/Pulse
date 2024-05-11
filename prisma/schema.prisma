@@ -15,8 +15,13 @@ datasource db {
 
 // Whenever this schema is changed ensure you run: prisma migrate dev or prisma db push
 // This will keep your database schema in sync with your Prisma schema
+
+// Commands in order:
+//    1. npx prisma generate
+//    2. npx prisma migrate dev --name <migration-name>
+//    3. npx prisma migrate deploy
 model User {
-  id      Int      @id @default(autoincrement())
+  id      String      @id @default(uuid())
   email   String   @unique
   username String @unique
   password String 
