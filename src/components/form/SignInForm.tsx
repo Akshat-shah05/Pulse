@@ -15,6 +15,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import GoogleSignInButton from '../GoogleSignInButton';
+import { signIn } from 'next-auth/react'
 
 // Code is basically the same as the SignUpForm, except the zod schema is different
 
@@ -39,8 +40,12 @@ const SignInForm = () => {
   })
 
   // onSubmit function 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const signInData = await signIn('credentials', {
+        email: values.email,
+        password: values.password
+    })
+    console.log(signInData)
   }
 
   // Taken mostly from the ShadCN documentation 
