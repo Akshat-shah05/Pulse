@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { db } from "./db";
-import { compare } from "bcrypt";
+import { compare, compareSync } from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(db),
@@ -18,16 +18,11 @@ export const authOptions: NextAuthOptions = {
     // providers array taken from next-auth documentation
     providers: [
         CredentialsProvider({
-
           name: "Credentials",
-
-         // Credentials that will be used for signing in
           credentials: {
             email: { label: "Email", type: "email", placeholder: "jsmith@gmail.com" },
             password: { label: "Password", type: "password" }
           },
-
-          // authorization with the given credentials
           async authorize(credentials) {
             // if email or password not given, authorization fails
             if (!credentials?.email || !credentials?.password) {
@@ -36,7 +31,7 @@ export const authOptions: NextAuthOptions = {
 
             // if user email does not match with a unique email from the database, authorization fails
             const existingUser = await db.user.findUnique({
-                where: {email: credentials?.email}
+                where: { email: credentials?.email }
             });
             if (!existingUser) {
                 return null
@@ -51,7 +46,7 @@ export const authOptions: NextAuthOptions = {
 
             // If everything passes, authorize the user and return info about them
             return {
-                id: existingUser.id,
+                id: existingUser.id + '',
                 username: existingUser.username,
                 email: existingUser.email
             }
