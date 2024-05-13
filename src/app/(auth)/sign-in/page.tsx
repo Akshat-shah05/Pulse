@@ -1,9 +1,13 @@
-'use client'
-
 import SignInForm from '@/components/form/SignInForm';
 import { motion } from 'framer-motion'
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-const page = () => {
+const page = async () => {
+    const session = await getServerSession();
+    if (session) {
+        redirect("/")
+    }
     return (
         <>
             <div className = 'h-screen flex flex-col justify-center items-center bg-black'>

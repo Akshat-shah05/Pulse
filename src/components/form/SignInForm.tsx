@@ -31,6 +31,7 @@ const FormSchema = z.object({
 
 const SignInForm = () => {
     // Create form
+  const router = useRouter()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -47,7 +48,10 @@ const SignInForm = () => {
         password: values.password, 
         redirect: false
     })
-    console.log(response)
+    if(!response?.error) {
+        router.push('/dashboard')
+        router.refresh()
+    }
   }
 
   // Taken mostly from the ShadCN documentation 
