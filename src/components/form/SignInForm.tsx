@@ -30,7 +30,6 @@ const FormSchema = z.object({
 
 
 const SignInForm = () => {
-  const router = useRouter()
     // Create form
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -42,7 +41,13 @@ const SignInForm = () => {
 
   // onSubmit function 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    console.log("Signed In")
+    console.log(values.email, values.password)
+    const response = await signIn('credentials', {
+        email: values.email,
+        password: values.password, 
+        redirect: false
+    })
+    console.log(response)
   }
 
   // Taken mostly from the ShadCN documentation 
