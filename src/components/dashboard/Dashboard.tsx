@@ -11,7 +11,10 @@ const Dashboard = ({ username }: Props) => {
 
   return (
     <>
+      <div className="h-screen bg-black">
         <Navbar />
+        <h1 className="text-white"> Welcome {username}</h1>
+      </div>
     </>
   )
 }
