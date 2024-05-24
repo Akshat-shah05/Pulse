@@ -7,6 +7,10 @@ const handler = NextAuth({
     session: {
         strategy: 'jwt'
     },
+    pages: {
+        signIn: '/sign-in',
+        signOut: '/'
+    },
     providers: [
         CredentialsProvider({
           // The name to display on the sign in form (e.g. "Sign in with...")
@@ -37,7 +41,8 @@ const handler = NextAuth({
             if (match) {
                 return {
                     id: response.id,
-                    email: response.email
+                    email: response.email,
+                    username: response.username
                 }
             }
 
