@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import Logout from "./logout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +20,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {!!session && 
-         <Logout />
-        } 
         {!session &&
         <Link href="/sign-in">
           
