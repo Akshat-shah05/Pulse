@@ -17,7 +17,6 @@ import Link from 'next/link';
 import GoogleSignInButton from '../GoogleSignInButton';
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation';
-
 // Code is basically the same as the SignUpForm, except the zod schema is different
 
 const FormSchema = z.object({
@@ -43,6 +42,7 @@ const SignInForm = () => {
   // onSubmit function 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     console.log(values.email, values.password)
+    
     const response = await signIn('credentials', {
         email: values.email,
         password: values.password, 
@@ -51,6 +51,8 @@ const SignInForm = () => {
     if(!response?.error) {
         router.push('/dashboard')
         router.refresh()
+    } else {
+        form.reset()
     }
   }
 
@@ -69,7 +71,7 @@ const SignInForm = () => {
                         <FormControl>
                             <div className="text-black"><Input placeholder='mail@example.com' {...field} /></div>
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage/>
                         </FormItem>
                     )}
                     />
