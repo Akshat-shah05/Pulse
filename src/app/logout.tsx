@@ -1,9 +1,10 @@
 'use client'
+import { Button } from "@/components/ui/button"
 
 import { signOut } from "next-auth/react"
 
 export default function Logout() {
     return (
-        <span onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}> Logout </span>
+        <Button variant="destructive" onClick={() => signOut()}> Logout </Button>
     )
 }
