@@ -1,12 +1,16 @@
+'use-client'
 import React from 'react'
 import Logout from '@/app/logout' 
 import { useState } from 'react'
 import AddFriendButton from '../addFriendButton/AddFriendButton'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 
-const Navbar = () => {
-  const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
+interface Props {
+    username: string | undefined | null
+}
 
+const Navbar = ({username}: Props) => {
+  const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
   const toggleDropdown = () => {
     setDropdownIsOpen(!dropdownIsOpen);
     console.log("opened")
@@ -26,6 +30,7 @@ const Navbar = () => {
                         <li><a className="hover:text-cyan-200" href="#">Home</a></li>
                         <li><a className="hover:text-cyan-200" href="#">Leaderboards</a></li>
                         <li><a className="hover:text-cyan-200" href="#">Contact Us</a></li>
+                        <li><a className="hover:text-cyan-300" href="#"> Friends </a></li>
                     </ul>
                     
                 </div>
@@ -41,7 +46,7 @@ const Navbar = () => {
                 )}
             */}
                 <div className='pr-4'>
-                    <AddFriendButton />
+                    <AddFriendButton username={username}/>
                 </div>
                 <div className='pr-4'>
                     <Logout />
