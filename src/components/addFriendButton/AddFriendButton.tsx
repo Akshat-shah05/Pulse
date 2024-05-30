@@ -1,38 +1,39 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import * as z from "zod"
-import { Button } from '../ui/button'
-import { useRouter } from 'next/navigation'
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import * as z from "zod";
+import { Button } from '../ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
+// Props that will be passed to the button, handling for opening and closing the input field for adding a friend
 interface ButtonProps {
   open: boolean,
   setOpen: Dispatch<SetStateAction<boolean>>,
-}
+};
 
+// Props for accepting the username from Navbar.tsx
 interface userProps {
   username: string | null | undefined
-}
+};
 
 const AddFriendButton = ({username}: userProps) => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  // check if input is open or not
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
+  // close input on click
   const handleClick = () => {
-    setModalOpen(!modalOpen)
-    console.log(username)
+    setModalOpen(!modalOpen);
+    console.log(username);
   }
 
-
+  // component 
   return (
     <div className="flex flex-col"> 
         {modalOpen 
@@ -47,26 +48,30 @@ const AddFriendButton = ({username}: userProps) => {
   )
 }
 
+// Zod form schema
 const FormSchema = z.object({
     friendUsername: z.string(),
     username: z.any()
 });
 
-type Props = ButtonProps & userProps
+// Intersection between props - clean solution to types being annoying asl
+type Props = ButtonProps & userProps;
 
+// component for form
 const AddFriendForm = ({open, setOpen, username}: Props) => {
 
+  // zod form
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       friendUsername: "",
       username: username // username is the default value (current session username), there is not set form for it, just need it to pass it to the route
     },
-  })
+  });
 
+  // zod submit, sends POST request to /api/friends/add to add a friend
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     setOpen(!open)
-    console.log("In submit " + username)
     const response = await fetch("/api/friends/add", {
       method: "POST", 
       headers: {
@@ -76,18 +81,21 @@ const AddFriendForm = ({open, setOpen, username}: Props) => {
         friend: values.friendUsername, // username of the friend that you are adding from input
         username: values.username // username received as props, current session username
       })
-    })
+    });
 
     if(response.ok) {
-        form.reset()
-        alert("Success!")
+        // Make this specific to the response message of course, this is is fine for now though
+        form.reset();
+        alert("Success!");
     } else {
         // Use react alert to make an error pop up, and then reset form
-        form.reset()
-        alert("Failure")
+        // Make this specific to the response message of course, this is is fine for now though
+        form.reset();
+        alert("Failure");
     }
   }
 
+  // Zod Form
   return (
     <Form {...form}>
       <div className="flex flex-row items-center">

@@ -1,13 +1,14 @@
-'use client'
-import Navbar from "../navbar/Navbar"
-import { ReactNode, createContext, useContext } from "react"
+'use client';
+import Navbar from "../navbar/Navbar";
 
+// props for the username
 interface userProps {
   username: string | null | undefined
-}
+};
 
+// dashboard component, accepts username from top levle page.tsx
 const Dashboard = ({username}: userProps) => {
-  console.log(username)
+  // returns the Navbar alongside a welcome message. this is the entire dashboard page. LOTS TO COME!
   return (
     <>
       <div className="h-screen bg-black">
