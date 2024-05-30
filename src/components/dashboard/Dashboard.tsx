@@ -1,18 +1,16 @@
 'use client'
-import { Button } from "@/components/ui/button"
-import Logout from "@/app/logout"
 import Navbar from "../navbar/Navbar"
+import { ReactNode, createContext, useContext } from "react"
 
-interface Props {
-    username: string | undefined | null
+interface userProps {
+  username: string | null | undefined
 }
 
-const Dashboard = ({ username }: Props) => {
-
+const Dashboard = ({username}: userProps) => {
   return (
     <>
       <div className="h-screen bg-black">
-        <Navbar />
+        <Navbar username={username}/>
         <h1 className="text-white"> Welcome {username}</h1>
       </div>
     </>
