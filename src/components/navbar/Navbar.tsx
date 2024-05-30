@@ -11,11 +11,7 @@ interface Props {
 
 const Navbar = ({username}: Props) => {
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
-  const toggleDropdown = () => {
-    setDropdownIsOpen(!dropdownIsOpen);
-    console.log("opened")
-
-  };
+  console.log(username)
   return (
     <div className="flex flex-wrap bg-black">
         <section className="relative mx-auto">
