@@ -27,4 +27,5 @@ model User {
   password String 
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
+  friends String[]
 }
