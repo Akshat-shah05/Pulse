@@ -7,6 +7,7 @@ interface userProps {
 }
 
 const Dashboard = ({username}: userProps) => {
+  console.log(username)
   return (
     <>
       <div className="h-screen bg-black">
