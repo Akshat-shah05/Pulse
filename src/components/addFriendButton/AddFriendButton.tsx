@@ -38,11 +38,12 @@ const AddFriendButton = ({username}: userProps) => {
     <div className="flex flex-col"> 
         {modalOpen 
         ? 
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center">
           <AddFriendForm open={modalOpen} setOpen={setModalOpen} username={username}/>
+          <Button variant="ghost" className="mr-5" size="xs" onClick={handleClick}> X </Button>
         </div>
         : 
-        <Button variant="secondary" size="sm" onClick={handleClick}> Add a Friend </Button>
+        <Button variant="rainbow" size="sm" onClick={handleClick}> Add a Friend </Button>
         }
     </div>
   )
@@ -113,7 +114,7 @@ const AddFriendForm = ({open, setOpen, username}: Props) => {
               </FormItem>
               )}
             />
-            <Button variant="ghost" size="sm" className="px-6 ml-6 mr-6" type='submit'>
+            <Button variant="rainbow" size="sm" className="px-6 ml-6 mr-1" type='submit'>
             Add
             </Button>
           </div>
