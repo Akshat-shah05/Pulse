@@ -1,17 +1,15 @@
 'use client'
 import { motion } from 'framer-motion'
 import Link from "next/link";
-import { useEffect } from 'react';
 
 export default function Home() {
   const text = "Welcome to Pulse"
-  const fade = "Click to Continue"
-  
+  const fade = "Click to Continue"  
 
   return (
-    <div>
+    <div className="bg-black ">
       <motion.main 
-        className="h-screen w-full flex flex-col justify-center items-center bg-zinc-950 text-9xl text-pink-300 font-sans tracking-widest"
+        className="h-screen w-full flex flex-col bg-black justify-center items-center bg-zinc-950 text-9xl text-pink-300 font-sans tracking-widest"
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5 }}
