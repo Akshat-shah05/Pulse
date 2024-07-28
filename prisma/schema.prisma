@@ -28,5 +28,6 @@ model User {
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
   friends String[]
+  friendRequests String[]
   pushupsAllTime Int @default(0)
 }
