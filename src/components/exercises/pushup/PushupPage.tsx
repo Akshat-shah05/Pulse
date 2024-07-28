@@ -24,7 +24,11 @@ const isPushup = (pose: Pose[]): boolean => {
   return false;
 };
 
-const PushUpPage = () => {
+interface pushupProps {
+  username: string | null | undefined;
+}
+
+const PushUpPage = ({username}: pushupProps) => {
   const detectPose = usePoseDetection();
   const [count, setCount] = useState(0);
   const [isDown, setIsDown] = useState(false);
@@ -63,9 +67,9 @@ const PushUpPage = () => {
   return (
     <>
       <Navbar2 />
-      <div className="flex flex-col justify-center items-center bg-black h-screen w-full pb-40 text-white">
+      <div className="flex flex-col justify-center items-center bg-background h-screen w-full pb-40 text-white">
         <h1 className="pb-10">Pushup Counter: {count}</h1>
-        <WebcamFeed onFrame={handleFrame} setCount={setCount} count={count}/>
+        <WebcamFeed onFrame={handleFrame} setCount={setCount} count={count} username={username}/>
       </div>
     </>
   );
