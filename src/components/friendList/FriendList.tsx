@@ -5,8 +5,9 @@ import Navbar2 from "../navbar2/Navbar2"
 import { Card } from "../ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import '../../../public/assets/placeholder.jpg'
+import FriendRequestCard from "../friendCard/FriendRequestCard"
 
-export default function FriendList({friends, friendRequests}: any) {
+export default function FriendList({friends, friendRequests, username}: any) {
     const [active, setActive] = useState<number>(0)
     
     console.log(friends, friendRequests)
@@ -35,7 +36,7 @@ export default function FriendList({friends, friendRequests}: any) {
                 <div className="flex flex-col gap-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {friends.map((friend: string , index: Key | null | undefined) => (
-                        <FriendCard friend={friend} key={index} />
+                        <FriendCard friend={friend} username={username} key={index} />
                     ))}
                     </div>
                 </div>
@@ -46,7 +47,7 @@ export default function FriendList({friends, friendRequests}: any) {
                 <div className="flex flex-col gap-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {friendRequests.map((friend: string , index: Key | null | undefined) => (
-                        <FriendCard friend={friend} key={index} />
+                        <FriendRequestCard friend={friend} username={username} key={index} />
                     ))}
                     </div>
                 </div>
