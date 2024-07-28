@@ -12,7 +12,11 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
   import "./cube.css"
-  
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { Card, CardContent } from "@/components/ui/card"
+import { SearchIcon } from 'lucide-react'
 
 // props for username, received from Dashboard.tsx
 
@@ -24,54 +28,34 @@ interface Props {
 // navbar component
 const Navbar = ({username}: Props) => {
   return (
-    <div className="flex flex-wrap bg-black">
-        <section className="relative mx-auto">
-            <nav className="flex justify-between bg-black text-white w-screen border-b-2 border-purple-200 items-center">
-                <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-
-                    <div
-                    className="p-1 animate-spin drop-shadow-2xl bg-gradient-to-bl text-black from-pink-400 via-purple-400 to-indigo-600 md:w-12 md:h-12 h-16 w-16 aspect-square rounded-full"
-                    >
-                        <div
-                            className="rounded-full h-full w-full bg-zinc-900 background-blur-md"
-                        ></div>
-                    </div>
-                    <a className="text-3xl font-bold font-heading pl-6" href="#">
-                        <h1> Pulse </h1>
-                    </a>
-                    
-                    {/* Make this part responsive -- Do later though too lazy rn */}
-                    <ul className="md:flex px-4 mx-auto font-semibold font-heading space-x-12">
-                        <li><a className="hover:text-[#c873fa]" href="#">Home</a></li>
-                        <li><a className="hover:text-[#c873fa]" href="#">Leaderboards</a></li>
-                        <li><a className="hover:text-[#c873fa]" href="#">Contact Us</a></li>
-                        <li><a className="hover:text-[#c873fa]" href="/dashboard/friends"> Friends </a></li>
-                    </ul>
-                    
-                </div>
+    <header className="sticky top-0 z-40 w-full border-b bg-background">
+        <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+            <nav className="flex items-center gap-4 text-sm font-medium">
+                <Link href="#" className="text-primary" prefetch={false}>
+                Home
+                </Link>
+                <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+                Leaderboards
+                </Link>
+                <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+                Contact Us
+                </Link>
+                <Link href="/dashboard/friends" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+                Friends
+                </Link>
+            </nav>
             
-            {/* 
-
-                Keeping this for toggle, might end up using it
-
-                <button onClick={toggleDropdown} className="text-white bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 hover:text-cyan-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </button>
-                {dropdownIsOpen && (
-                    <h1 className="text-white"> BOOMER </h1>
-                )}
-            */}
+            <div className="flex items-center gap-4">
                 <div className='pr-4'>
                     <AddFriendButton username={username}/>
                 </div>
-                <div className="pr-4 ml-6 mt-1">
+                <div>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 hover:text-[#c873fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                            <Avatar className="h-8 w-8 border-[#c873fa] hover:bg-[#e3fff9] hover:text-accent-foreground border">
+                                <AvatarImage src="/placeholder-user.jpg" />
+                                <AvatarFallback>JD</AvatarFallback>
+                            </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -80,10 +64,9 @@ const Navbar = ({username}: Props) => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-
-            </nav>  
-        </section>
-    </div>
+            </div>
+        </div>
+    </header>
   )
 }
 
