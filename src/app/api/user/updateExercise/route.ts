@@ -1,15 +1,16 @@
 
 import { db } from "@/lib/db";
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from "next/server";
+export async function POST (req: Request) {
 
-export async function POST (req: NextApiRequest, res: NextApiResponse) {
-
-    const { userId, incrementBy } = req.body;
+    const user = await req.json();
+    const { userId, incrementBy } = user
+    console.log(userId, incrementBy)
 
     try {
         const updatedUser = await db.user.update({
           where: {
-            id: userId,
+            username: userId,
           },
           data: {
             pushupsAllTime: {
@@ -17,7 +18,9 @@ export async function POST (req: NextApiRequest, res: NextApiResponse) {
             },
           },
         });
+        return NextResponse.json({ updatedUser: updatedUser, message: "User updated Successfully" }, {status: 201})
     } catch(error) {
-        res.status(500).json({ error: 'Error incrementing pushups' });
+        console.log(error)
+        return NextResponse.json({error: "something went wrong"})
     }
 }
