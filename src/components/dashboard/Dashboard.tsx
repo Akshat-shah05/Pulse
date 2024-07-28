@@ -1,7 +1,7 @@
 'use client';
 import Navbar from "../navbar/Navbar";
-import Card from "../card/Card";
 import { useEffect, useState } from "react";
+import CardList from "../card/Cardlist";
 
 // props for the username
 interface userProps {
@@ -36,11 +36,11 @@ const Dashboard = ({username}: userProps) => {
       ) : 
       (
         <>
-          <div className="h-screen bg-black flex flex-col">
+          <div className="flex min-h-screen w-full flex-col bg-background">
             <Navbar username={username}/>
-            <h1 className="text-white text-4xl flex flex-row justify-center mt-5"> Welcome {username}</h1>
-            <h2 className="text-[#AFAFB3] text-2xl flex flex-row justify-center mt-5"> Start by choosing an excercise</h2>
-            <Card />
+            <h1 className="text-4xl flex flex-row justify-center mt-5"> Welcome {username}</h1>
+            <h2 className="text-primary text-2xl flex flex-row justify-center mt-5"> Start by choosing an excercise</h2>
+            <CardList />
           </div>
         </>
       )
