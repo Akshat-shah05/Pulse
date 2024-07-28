@@ -1,4 +1,4 @@
-import {NextResponse} from "next/server"
+import { NextResponse } from "next/server"
 import { db } from "@/lib/db";
 
 // POST request received at this enpoint (api/friends/add)
@@ -51,7 +51,7 @@ export async function POST (req: Request) {
             );
         };
 
-        // given that the friend is not already a friend and the friend exists in our databse, update the usernames friend array
+        // given that the friend is not already a friend and the friend exists in our databse, update the friend friendrequest array
         const updatedUser = await db.user.update({
             where: { username: friend },
             data: {
@@ -61,9 +61,9 @@ export async function POST (req: Request) {
             },
         });
 
-        console.log(`${friend} has been added as a friend for ${username}`)
+        console.log(`A friend request has been sent to ${friend}`)
         return NextResponse.json(
-            {user: updatedUser, result: true, message: `${friend} has been added as a friend for ${username}`},
+            {user: updatedUser, result: true, message: `A friend request has been sent to ${friend}`},
             {status: 200}
         );
         

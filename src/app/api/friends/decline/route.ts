@@ -20,12 +20,11 @@ export async function POST(req: Request) {
   
         // Remove the friend from the friendRequests array
         const updatedFriendRequests = user.friendRequests.filter(request => request !== friend);
-        const updatedFriends = [...user.friends, friend];
   
         // Update the user in the database
         await db.user.update({
           where: { username: currentUser },
-          data: { friendRequests: updatedFriendRequests, friends: updatedFriends },
+          data: { friendRequests: updatedFriendRequests },
         });
   
         return NextResponse.json(
