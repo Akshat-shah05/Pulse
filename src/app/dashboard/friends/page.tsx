@@ -28,7 +28,7 @@ const page = async () => {
     console.log(friendRequests)
  
   return (
-    <FriendList friends={friends} friendRequests={friendRequests}/>
+    <FriendList friends={friends} friendRequests={friendRequests} username={email}/>
   )
 }
 
