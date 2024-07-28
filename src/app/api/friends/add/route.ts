@@ -7,9 +7,6 @@ export async function POST (req: Request) {
         // Get the body from the request, should be friend: friendUsername, and username: username
         const body = await req.json();
 
-        // test
-        console.log("this is body" + body);
-
         const { friend, username } = body;
 
         // test
@@ -56,10 +53,10 @@ export async function POST (req: Request) {
 
         // given that the friend is not already a friend and the friend exists in our databse, update the usernames friend array
         const updatedUser = await db.user.update({
-            where: { username },
+            where: { username: friend },
             data: {
-                friends: {
-                push: friend,
+                friendRequests: {
+                push: username,
                 },
             },
         });
