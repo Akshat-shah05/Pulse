@@ -1,17 +1,22 @@
 // components/WebcamFeed.tsx
 import React, { useRef, useEffect, useState, Dispatch, SetStateAction } from 'react';
 import Webcam from 'react-webcam';
-import { db } from '@/lib/db';
-import { getServerSession } from 'next-auth';
 
 interface WebcamFeedProps {
   onFrame: (video: HTMLVideoElement) => void;
   setCount: Dispatch<SetStateAction<number>>;
   count: number;
+  username: string | null | undefined;
 }
 
+interface pushupProps {
+  username: string | null | undefined;
+}
 
-const WebcamFeed: React.FC<WebcamFeedProps> = ({ onFrame, setCount, count }) => {
+type Props = WebcamFeedProps & pushupProps
+
+
+const WebcamFeed= ({ onFrame, setCount, count, username }: Props) => {
   const webcamRef = useRef<Webcam>(null);
   const [isWebcamOn, setIsWebcamOn] = useState(true);
 
@@ -33,7 +38,21 @@ const WebcamFeed: React.FC<WebcamFeedProps> = ({ onFrame, setCount, count }) => 
       webcamRef.current.stream.getTracks().forEach(track => track.stop());
       setIsWebcamOn(false);
     }
+
     setCount(0);
+
+    const response = await fetch('/api/user/updateExercise', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: username, // username of the friend that you are adding from input
+        incrementBy: count // username received as props, current session username
+      })
+    })
+
+    console.log(response)
   };
 
   const turnOnWebcam = () => {
