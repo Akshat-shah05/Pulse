@@ -3,13 +3,15 @@ import FriendCard from '@/components/friendCard/FriendCard'
 import { getServerSession } from "next-auth";
 import { db } from '@/lib/db';
 import Navbar2 from '@/components/navbar2/Navbar2';
+import { useState } from 'react';
+import FriendList from '@/components/friendList/FriendList';
 
 const page = async () => {
     const user = await getServerSession();
-
     // Get the email, check if email exists
     let email = user?.user?.email;
     let friends;
+    let friendRequests;
     console.log(email);
 
     // if email exists, replace email with the associated username
@@ -19,25 +21,14 @@ const page = async () => {
         })
         email = person?.username;
         friends = person?.friends;
+        friendRequests = person?.friendRequests;
     }
 
-    console.log(friends ? "hi" : "no")
-
+    console.log(friends)
+    console.log(friendRequests)
+ 
   return (
-    <>
-        <Navbar2 />
-        <div className="h-screen w-full bg-black flex flex-col items-center">
-            <h1 className="text-7xl text-white mt-10 mb-10"> Friends </h1>
-            {friends
-            ? 
-            friends.map((friend: string | undefined) => {
-                return (<FriendCard key={friend} friend={friend} />)
-            }) 
-            : 
-            <div> Damn bro you got NO friends</div>
-            }
-        </div>
-    </>
+    <FriendList friends={friends} friendRequests={friendRequests}/>
   )
 }
 
