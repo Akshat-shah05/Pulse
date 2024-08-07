@@ -24,12 +24,12 @@ const Dashboard = ({username}: userProps) => {
     {
       loading ? 
       (
-        <div className="h-screen bg-black flex flex-col justify-center items-center">
+        <div className="h-screen bg-background flex flex-col justify-center items-center">
           <div
           className="p-4 animate-spin drop-shadow-2xl bg-gradient-to-bl text-black from-pink-400 via-purple-400 to-indigo-600 h-60 w-60 aspect-square rounded-full"
           >
               <div
-                  className="rounded-full h-full w-full bg-black background-blur-md"
+                  className="rounded-full h-full w-full bg-background background-blur-md"
               ></div>
           </div>
         </div>

@@ -12,7 +12,7 @@ const GoogleSignInButton = ({ children }: GoogleSignInButtonProps) => {
     const loginWithGoogle = () => console.log('login with google');
 
     return (
-        <Button onClick={loginWithGoogle} className='mx-auto my-4 bg-black border-red-100 border-2 flex w-full items-center justify-evenly'>
+        <Button onClick={loginWithGoogle} className='mx-auto text-primary my-4 bg-background border-primary border-2 flex w-full items-center justify-evenly'>
             {children}
         </Button>
     );

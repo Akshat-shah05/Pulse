@@ -10,8 +10,8 @@ const page = async () => {
     }
     return (
         <>
-            <div className = 'h-screen flex flex-col justify-center items-center bg-black'>
-                <h1 className="bg-black text-6xl text-white flex flex-row justify-center item-center pb-10 text-red-100"> Welcome! Please Sign in </h1>
+            <div className = 'h-screen flex flex-col justify-center items-center bg-background'>
+                <h1 className="bg-background text-6xl text-primary flex flex-row justify-center item-center pb-10 text-primary"> Welcome! Please Sign in </h1>
                 <SignInForm />
             </div>
         </>

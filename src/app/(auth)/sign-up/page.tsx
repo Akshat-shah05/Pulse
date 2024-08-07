@@ -10,7 +10,7 @@ const page = async () => {
     }
 
     return (
-        <div className="h-screen flex flex-row justify-center items-center bg-black">
+        <div className="h-screen flex flex-row justify-center items-center bg-background">
             <SignUpForm />
         </div>
     )

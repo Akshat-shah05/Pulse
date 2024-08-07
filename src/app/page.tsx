@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="bg-background ">
       <motion.main 
-        className="h-screen w-full flex flex-col bg-black justify-center items-center bg-zinc-950 text-9xl text-pink-300 font-sans tracking-widest"
+        className="h-screen w-full flex flex-col bg-background justify-center items-center text-9xl text-primary font-sans tracking-widest"
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5 }}
