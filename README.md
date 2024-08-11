@@ -65,7 +65,7 @@ The inspiration for this project was really just wanting a tool that would motiv
       - These frames would be initialized by the usePoseDetection hook that I previously made
       - Then I made a custom function called isPushup, that goes through every frame and then determines mathematically by keeping track of the joints when a pushup is complete (lots of fine tuning here) 
 
-Minor Challenges:
+### Minor Challenges:
 - Reading through loads of documentation to set up my first NextJS + ShadCN application
 - Figuring out how to use Prisma 
 - Learning how to work with ShadCN properly as its not the same as other component libraries I've used such as ChakraUI (it isn't in the node modules, rather you install actual components in @/components/ui
