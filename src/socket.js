@@ -1,5 +1,10 @@
-"use client";
-
 import { io } from "socket.io-client";
 
-export const socket = io();
+let socket = null;
+
+export const getSocket = () => {
+  if (!socket) {
+    socket = io("http://localhost:3000"); // Always connect to the main server
+  }
+  return socket;
+};
