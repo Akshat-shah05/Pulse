@@ -1,7 +1,7 @@
 # Pulse: 🏋️🌟 The Most Fun Competitive Fitness Application 🔥💪
 
 ### Watch a short little demo here :) https://youtu.be/GqNxkKXEF_w
-(Video with Multiplayer function coming soon)
+(Video demonstrating Multiplayer function coming soon)
 
 ## Inspiration 💡💭
 The inspiration for this project was really just wanting a tool that would motivate me to workout, EVEN during those days where I really don't want to go to the gym. Recently, with working so much and being burntout, the gym has gone from something I did for fun and growth, to another chore that I feel forced/obligated to do. I wanted to use my passion for programming to create a solution to this motivation issue. If I had a system that would let me workout with others (my favourite part of goint to the gym), from home, I could stay active even on those not-so-good days. This led to the eventual production of Pulse, an application where you can compete against your friends in real-time exercises to workout from the comfort of you home, perfect for those days where you really can't push yourself to go to the gym.
@@ -21,6 +21,10 @@ The inspiration for this project was really just wanting a tool that would motiv
 - Leaderboard to see how you've been progressing compared to your friends for motivation!
 - Add friend functionality 
 - Saves user data to a PostgreSQL database, powered by Prisma
+
+## Newly Added Features / Features in Progress
+- Completed the game room system where users match into a room to compete
+- Working on Adding real-time work out suggestions as you complete your exercises
 
 ## Technologies 💻🔐
 - Next.js / React
