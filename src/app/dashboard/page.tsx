@@ -1,14 +1,14 @@
 import Dashboard from '@/components/dashboard/Dashboard';
 import { getServerSession } from "next-auth";
-import { db } from "@/lib/db";
+import { db } from '../../lib/db';
+import { SessionProvider } from 'next-auth/react';
 
 const page = async () => {
-    // get the current username 
+    // get the current username
     const user = await getServerSession();
 
     // Get the email, check if email exists
     let email = user?.user?.email;
-    console.log(email);
 
     // if email exists, replace email with the associated username
     if(email) {
