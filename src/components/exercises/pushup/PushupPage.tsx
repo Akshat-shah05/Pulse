@@ -67,7 +67,7 @@ const PushUpPage = ({username}: pushupProps) => {
   return (
     <>
       <Navbar2 />
-      <div className="flex flex-col justify-center items-center bg-background h-screen w-full pb-40 text-white">
+      <div className="flex flex-col justify-center items-center bg-background h-screen w-full pb-40 text-primary">
         <h1 className="pb-10">Pushup Counter: {count}</h1>
         <WebcamFeed onFrame={handleFrame} setCount={setCount} count={count} username={username}/>
       </div>
