@@ -74,6 +74,18 @@ app.prepare().then(() => {
     });
   });
 
+  process.on('SIGINT', async () => {
+    console.log("Server is shutting down...");
+    await prisma.onlineUser.deleteMany();
+    process.exit();
+  });
+
+  process.on('SIGTERM', async () => {
+    console.log("Server is shutting down...");
+    await prisma.onlineUser.deleteMany();
+    process.exit();
+  });
+
   function startServer(port) {
     httpServer.listen(port, hostname, () => {
       console.log(`> Ready on http://${hostname}:${port}`);
