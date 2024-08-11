@@ -53,7 +53,7 @@ const Navbar = ({username}: Props) => {
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <Avatar className="h-8 w-8 border-[#c873fa] hover:bg-[#e3fff9] hover:text-accent-foreground border">
-                                <AvatarImage src="/placeholder-user.jpg" />
+                                <AvatarImage src="" />
                                 <AvatarFallback>JD</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
