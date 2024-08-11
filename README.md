@@ -36,9 +36,9 @@ The inspiration for this project was really just wanting a tool that would motiv
 
 ## Challenges I ran into 💪🤔
 
-# Major Challenges: 
+### Major Challenges: 
 
-# Figuring out how to make a real-time game-like system with sockets
+#### Figuring out how to make a real-time game-like system with sockets
   1. Sockets were not persisting between /dashboard and /multiplayer
      - to fix this I had to create a getSocket() function that makes a shared singleton socket
 
@@ -55,7 +55,7 @@ The inspiration for this project was really just wanting a tool that would motiv
   5. Struggled to figure out how I can have more than 2 users (I had it hard coded so that if PORT 3000 was used, it would go to 3001, but what about a third user?)
        - To fix this I added a recursive function in the server.js that keeps restarting the server and incrementing the PORT until it finds an open port
 
-# Setting Up the Webcam + Tensorflow Model
+#### Setting Up the Webcam + Tensorflow Model
   1. Had to figure out how to make custom hooks to get my pose detection model started
      
   2. Was difficult connecting results from the pose detection model to the state so that the DB could be updated
