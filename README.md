@@ -54,19 +54,25 @@ The inspiration for this project was really just wanting a tool that would motiv
 - Basic things like better auth protocols (verifying, mfa etc.)
 
 ## Try it out!
-```
 Get Repository on your device
-1. git clone https://github.com/Akshat-shah05/Pulse.git
-2. cd Pulse
+```
+git clone https://github.com/Akshat-shah05/Pulse.git
+cd Pulse
+```
 
 Install dependencies
-3. npm install
+```
+npm install
+```
+
+Add all necessary API Keys
+```
+DATABASE_URL
+NEXTAUTH_URL
+NEXTAUTH_SECRET
+```
 
 Run Application
-4. Add all necessary API Keys
-  a. DATABASE_URL
-  b. NEXTAUTH_URL
-  c. NEXTAUTH_SECRET
-
-5. npm run dev
+```
+npm run dev
 ```
