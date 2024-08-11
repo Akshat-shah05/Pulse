@@ -11,7 +11,6 @@ const prisma = new PrismaClient();
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
-// Helper function to log users
 async function logUsers() {
   const users = await prisma.onlineUser.findMany();
   console.log("Current online users:", users);
@@ -19,7 +18,12 @@ async function logUsers() {
 
 app.prepare().then(() => {
   const httpServer = createServer(handler);
-  const io = new Server(httpServer);
+  const io = new Server(httpServer, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+  });
 
   io.on("connection", (socket) => {
     socket.on("register", async (username) => {
@@ -31,7 +35,8 @@ app.prepare().then(() => {
       logUsers();
     });
 
-    socket.on("send-game-request", async (friendUsername, currentUser) => {
+    socket.on("send-game-request", async (friendUsername, currentUser, senderPort) => {
+      console.log("request from ", currentUser, "to", friendUsername, "from port", senderPort);
       try {
         const user = await prisma.user.findUnique({
           where: {
@@ -43,8 +48,12 @@ app.prepare().then(() => {
           const friend = await prisma.onlineUser.findUnique({
             where: { username: friendUsername },
           });
+
+          console.log(friend);
+
+          socket.emit("user-found", friendUsername);
           if (friend) {
-            io.to(friend.socketId).emit("game-request", currentUser);
+            io.to(friend.socketId).emit("game-request", currentUser, senderPort);
           } else {
             socket.emit("user-not-online", friendUsername);
           }
@@ -61,8 +70,8 @@ app.prepare().then(() => {
         where: { username: friendUsername },
       });
       if (friend) {
-        io.to(friend.socketId).emit("request-accepted");
-        socket.emit("request-accepted");
+        io.to(friend.socketId).emit("request-accepted", socket.username);
+        socket.emit("request-accepted", friendUsername);
       }
     });
 
@@ -71,6 +80,15 @@ app.prepare().then(() => {
         where: { socketId: socket.id },
       });
       logUsers();
+    });
+
+    socket.on("join-game-room", (roomId, username) => {
+      socket.join(roomId);
+      socket.to(roomId).emit("user-joined", username);
+    });
+    
+    socket.on("send-video-stream", (roomId, stream) => {
+      socket.to(roomId).emit("receive-video-stream", stream);
     });
   });
 
@@ -102,3 +120,6 @@ app.prepare().then(() => {
 
   startServer(port);
 });
+
+// http://localhost:3000/game-room?username=akky_the_one&roomId=akky_the_one-aaa
+// http://localhost:3001/game-room?username=aaa&roomId=aaa-null
