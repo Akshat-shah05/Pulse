@@ -1,54 +1,92 @@
-// REFERENCE FOR FUTURE: https://socket.io/how-to/use-with-nextjs 
+import { createServer } from "node:http";
+import next from "next";
+import { Server } from "socket.io";
+import { PrismaClient } from "@prisma/client";
 
-// create server, parse URL, get next + get socket
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
-const socketIo = require('socket.io');
+const dev = process.env.NODE_ENV !== "production";
+const hostname = "localhost";
+let port = 3000;
+const prisma = new PrismaClient();
 
-// Not prod, app setup with request handler
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
+const app = next({ dev, hostname, port });
+const handler = app.getRequestHandler();
 
-// set up app, create server
+// Helper function to log users
+async function logUsers() {
+  const users = await prisma.onlineUser.findMany();
+  console.log("Current online users:", users);
+}
+
 app.prepare().then(() => {
-  const server = createServer((req, res) => {
-    const parsedUrl = parse(req.url, true);
-    handle(req, res, parsedUrl);
-  });
+  const httpServer = createServer(handler);
+  const io = new Server(httpServer);
 
-  // initialize socket to server
-  const io = socketIo(server);
-
-  // turn socket on
-  io.on('connection', (socket) => {
-    console.log('a user connected');
-    
-    // Handle game requests
-    socket.on('sendGameRequest', (data) => {
-      const { toUsername, fromUsername } = data;
-      // Emit game request to the recipient
-      socket.broadcast.emit('receiveGameRequest', { toUsername, fromUsername });
+  io.on("connection", (socket) => {
+    socket.on("register", async (username) => {
+      await prisma.onlineUser.upsert({
+        where: { username },
+        update: { socketId: socket.id },
+        create: { username, socketId: socket.id },
+      });
+      logUsers();
     });
 
-    // accept game request (from receiving users side)
-    socket.on('acceptGameRequest', (data) => {
-      const { toUsername, fromUsername } = data;
-      // Notify both users to start the game
-      io.emit('startGame', { toUsername, fromUsername });
+    socket.on("send-game-request", async (friendUsername, currentUser) => {
+      try {
+        const user = await prisma.user.findUnique({
+          where: {
+            username: friendUsername,
+          },
+        });
+
+        if (user) {
+          const friend = await prisma.onlineUser.findUnique({
+            where: { username: friendUsername },
+          });
+          if (friend) {
+            io.to(friend.socketId).emit("game-request", currentUser);
+          } else {
+            socket.emit("user-not-online", friendUsername);
+          }
+        } else {
+          socket.emit("user-not-found", friendUsername);
+        }
+      } catch (error) {
+        console.error("Database query error:", error);
+      }
     });
 
-    // End the multiplayer
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
+    socket.on("accept-game-request", async (friendUsername) => {
+      const friend = await prisma.onlineUser.findUnique({
+        where: { username: friendUsername },
+      });
+      if (friend) {
+        io.to(friend.socketId).emit("request-accepted");
+        socket.emit("request-accepted");
+      }
+    });
+
+    socket.on("disconnect", async () => {
+      await prisma.onlineUser.deleteMany({
+        where: { socketId: socket.id },
+      });
+      logUsers();
     });
   });
 
-  // Listen at the port
-  const PORT = process.env.PORT || 8000;
-  server.listen(PORT, (err) => {
-    if (err) throw err;
-    console.log(`> Ready on http://localhost:${PORT}`);
-  });
+  function startServer(port) {
+    httpServer.listen(port, hostname, () => {
+      console.log(`> Ready on http://${hostname}:${port}`);
+    }).on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.warn(`Port ${port} is already in use, trying port ${port + 1}...`);
+        startServer(port + 1);
+      } else {
+        console.error(err);
+        process.exit(1);
+      }
+    });
+  }
+
+  startServer(port);
 });
