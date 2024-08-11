@@ -64,7 +64,7 @@ const WebcamFeed= ({ onFrame, setCount, count, username }: Props) => {
       {isWebcamOn ? (
         <Webcam className="rounded-lg" ref={webcamRef} />
       ) : (
-        <div className="h-96 w-96 bg-gray-500 rounded-lg">webcam off</div>
+        <div className="h-96 w-96 bg-background border border-primary flex flex-row justify-center items-center text-4xl rounded-lg">webcam off</div>
       )}
       <button onClick={isWebcamOn ? turnOffWebcam : turnOnWebcam} className="mt-4 bg-red-500 text-white p-2 rounded-lg">
         {isWebcamOn ? "Submit you Score!" : "Start a New Round"}

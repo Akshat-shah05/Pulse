@@ -1,12 +1,11 @@
-import Dashboard from '@/components/dashboard/Dashboard';
+import { SetStateAction, useEffect, useState } from "react";
+import { socket } from '../../../socket'
 import { getServerSession } from "next-auth";
-import { db } from '../../lib/db';
-import { SessionProvider } from 'next-auth/react';
+import { db } from "../../../lib/db";
+import Multiplayer from "@/components/multiplayer/Multiplayer";
 
 const page = async () => {
-    // get the current username
-    const user = await getServerSession();
-
+  const user = await getServerSession();
     // Get the email, check if email exists
     let email = user?.user?.email;
 
@@ -17,13 +16,13 @@ const page = async () => {
         })
         email = person?.username;
     }
+  
 
-    // return main dashboard component
   return (
-    <>
-        <Dashboard username={email}/>
-    </>
+    <div>
+      <Multiplayer username={email}/>
+    </div>
   );
 }
 
-export default page;
+export default page
