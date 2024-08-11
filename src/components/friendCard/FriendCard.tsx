@@ -1,7 +1,6 @@
 'use-client'
 import React from 'react'
 import { Card } from '../ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 
 interface friendProps {
     friend: string | undefined

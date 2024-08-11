@@ -1,9 +1,6 @@
 import React from 'react'
-import FriendCard from '@/components/friendCard/FriendCard'
 import { getServerSession } from "next-auth";
 import { db } from '@/lib/db';
-import Navbar2 from '@/components/navbar2/Navbar2';
-import { useState } from 'react';
 import FriendList from '@/components/friendList/FriendList';
 
 const page = async () => {

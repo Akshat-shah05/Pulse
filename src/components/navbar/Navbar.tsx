@@ -1,7 +1,6 @@
 'use-client'
 import React from 'react'
 import Logout from '@/app/logout' 
-import { useState } from 'react'
 import AddFriendButton from '../addFriendButton/AddFriendButton'
 import {
     DropdownMenu,
@@ -13,10 +12,7 @@ import {
   } from "@/components/ui/dropdown-menu"
   import "./cube.css"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Card, CardContent } from "@/components/ui/card"
-import { SearchIcon } from 'lucide-react'
 
 // props for username, received from Dashboard.tsx
 

@@ -1,9 +1,7 @@
 'use client'
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from "react"
+import { Key, useState } from "react"
 import FriendCard from "../friendCard/FriendCard"
 import Navbar2 from "../navbar2/Navbar2"
-import { Card } from "../ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import FriendRequestCard from "../friendCard/FriendRequestCard"
 
 export default function FriendList({friends, friendRequests, username}: any) {

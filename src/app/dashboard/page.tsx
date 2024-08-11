@@ -1,7 +1,6 @@
 import Dashboard from '@/components/dashboard/Dashboard';
 import { getServerSession } from "next-auth";
 import { db } from '../../lib/db';
-import { SessionProvider } from 'next-auth/react';
 
 const page = async () => {
     // get the current username

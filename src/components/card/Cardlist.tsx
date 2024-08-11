@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button } from '../ui/button'
-import { DumbbellIcon, TableIcon, XIcon, SquircleIcon, HandIcon, ImageUpIcon, MoveUpIcon, SearchIcon, SquareIcon } from '../icons/Icons'
+import { DumbbellIcon, TableIcon, SquircleIcon, HandIcon, ImageUpIcon, MoveUpIcon, SearchIcon, SquareIcon } from '../icons/Icons'
 import { Card, CardContent } from '../ui/card'
 import Link from 'next/link'
 
