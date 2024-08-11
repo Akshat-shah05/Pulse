@@ -40,14 +40,18 @@ Major Challenges:
 - Figuring out how to make a real-time game-like system with sockets
   1. Sockets were not persisting between /dashboard and /multiplayer
      - to fix this I had to create a getSocket() function that makes a shared singleton socket
-  3. Troubleshooting was difficult since at the start I didn't perfectly understand the socket methods (.on, .join, .emit)
-  4. Handling session with sockets, since getting the session requires server components, but sockets run only in client components (with socketio-client), so there was a lot of restructuring
-  5. Functionality for setting online users
+
+  2. Troubleshooting was difficult since at the start I didn't perfectly understand the socket methods (.on, .join, .emit)
+     
+  3. Handling session with sockets, since getting the session requires server components, but sockets run only in client components (with socketio-client), so there was a lot of restructuring
+     
+  4. Functionality for setting online users
        - I first just stored users into a hashmap, but this only saves user instances on ONE Port
        - Thus a user on PORT 3001 would not know that someone else was active on PORT 3000
        - To fix this I created a new Table that stores all currently active users with their socket ID's, this shared state allows connections across Ports
        - Ran into a CORS issue with this (of course :/ ), so I had to fix that
-  6. Struggled to figure out how I can have more than 2 users (I had it hard coded so that if PORT 3000 was used, it would go to 3001, but what about a third user?)
+         
+  5. Struggled to figure out how I can have more than 2 users (I had it hard coded so that if PORT 3000 was used, it would go to 3001, but what about a third user?)
        - To fix this I added a recursive function in the server.js that keeps restarting the server and incrementing the PORT until it finds an open port
 
 Minor Challenges:
