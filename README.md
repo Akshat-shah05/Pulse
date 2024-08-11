@@ -53,3 +53,20 @@ The inspiration for this project was really just wanting a tool that would motiv
 - Adding reminders to the email
 - Basic things like better auth protocols (verifying, mfa etc.)
 
+## Try it out!
+```
+Get Repository on your device
+1. git clone https://github.com/Akshat-shah05/Pulse.git
+2. cd Pulse
+
+Install dependencies
+3. npm install
+
+Run Application
+4. Add all necessary API Keys
+  a. DATABASE_URL
+  b. NEXTAUTH_URL
+  c. NEXTAUTH_SECRET
+
+5. npm run dev
+```
