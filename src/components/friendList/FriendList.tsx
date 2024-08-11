@@ -4,7 +4,6 @@ import FriendCard from "../friendCard/FriendCard"
 import Navbar2 from "../navbar2/Navbar2"
 import { Card } from "../ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import '../../../public/assets/placeholder.jpg'
 import FriendRequestCard from "../friendCard/FriendRequestCard"
 
 export default function FriendList({friends, friendRequests, username}: any) {
