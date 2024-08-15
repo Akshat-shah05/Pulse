@@ -56,7 +56,7 @@ const SignInForm = () => {
     }
   }
 
-  // Taken mostly from the ShadCN documentation 
+  // Taken almost entirely from the ShadCN documentation for zod forms
   return (
     <Form {...form}>
         <div className='w-6/12'>

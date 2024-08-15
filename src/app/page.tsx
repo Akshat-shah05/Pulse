@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion'
 import Link from "next/link";
 
+// Home page where user first lands --> motion tags are from framer-motion for animatios
 export default function Home() {
   const text = "Welcome to Pulse"
   const fade = "Click to Continue"  

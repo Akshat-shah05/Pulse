@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from 'bcrypt'
 import { db } from "@/lib/db";
 
+// jwt based authenticator with client credentials
 const handler = NextAuth({
     session: {
         strategy: 'jwt'
@@ -23,6 +24,8 @@ const handler = NextAuth({
             email: {  },
             password: {  }
           },
+
+          // authorization function
           async authorize(credentials, req) {
             console.log({ credentials })
             if (!credentials?.email || !credentials?.password) {
@@ -35,7 +38,8 @@ const handler = NextAuth({
             if (!response) {
                 return null
             }
-
+            
+            // password matching
             const match = await compare(credentials?.password || "", response.password)
             console.log({match})
             if (match) {
@@ -53,4 +57,5 @@ const handler = NextAuth({
       ]
 })
 
+// GET and POST accepted at handler
 export { handler as GET, handler as POST }

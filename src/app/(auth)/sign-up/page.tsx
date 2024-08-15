@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
+// sign up page, redirect to dashboard if user session already active
 const page = async () => {
     const session = await getServerSession();
     if (session) {

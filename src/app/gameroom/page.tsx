@@ -5,7 +5,10 @@ import { useSearchParams } from 'next/navigation';
 import GameRoom from '@/components/GameRoom/GameRoom';
 
 export default function GameRoomPage() {
+  // searchParams to get url info
   const searchParams = useSearchParams();
+
+  // user state + roomID, load game room passing in roomID and user props
   const [username, setUsername] = useState<string | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
 

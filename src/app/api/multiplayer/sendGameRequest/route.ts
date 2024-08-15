@@ -8,7 +8,7 @@ export async function POST(req: Request) {
         const body = await req.json()
         const { toUsername, fromUsername } = body;
 
-        // if the person sending isn't auth
+        // if the person sending isn't authenticated
         const fromUser = await db.user.findUnique({
             where: { username: fromUsername },
           });

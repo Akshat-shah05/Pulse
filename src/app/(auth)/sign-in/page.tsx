@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
+// sign-in page, if user already signed-in (cache counted too), redirect to dashboard
 const page = async () => {
     const session = await getServerSession();
     if (session) {

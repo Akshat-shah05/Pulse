@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-// Set up code as given by prisma docs --> Need the extra code because of a common bug that occurs when not in production
+// Set up code as given by prisma docs --> Need the extra lines (globalThis) because of a common bug that occurs when not in production
 
 const prismaClientSingleton = () => {
   return new PrismaClient()

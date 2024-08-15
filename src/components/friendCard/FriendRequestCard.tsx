@@ -11,6 +11,7 @@ interface friendProps {
 
 const FriendRequestCard = ({friend, username}: friendProps) => {
 
+    // Handle the case where the friend request is accepted
     const handleAccept = async () => {
         const response = await fetch("/api/friends/accept", {
             method: "POST", 
@@ -25,12 +26,13 @@ const FriendRequestCard = ({friend, username}: friendProps) => {
       
         if(response.ok) {
             alert("Success!");
-            window.location.reload()
+            window.location.reload() // reload to show changes
         } else {
             alert("Failure");
         }
     }
 
+    // handle the case where the friend request is denied
     const handleDecline = async () => {
         const response = await fetch("/api/friends/decline", {
             method: "POST", 
