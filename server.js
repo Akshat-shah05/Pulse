@@ -11,7 +11,7 @@ const prisma = new PrismaClient(); // Instantiate Prisma Client
 
 // Initialize Next.js app
 const app = next({ dev, hostname, port });
-const handler = app.getRequestHandler(); s
+const handler = app.getRequestHandler(); 
 
 // Function to log the current online users
 async function logUsers() {
