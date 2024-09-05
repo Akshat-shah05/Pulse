@@ -7,6 +7,7 @@ interface WebcamFeedProps {
   setCount: Dispatch<SetStateAction<number>>; // Function to update the count state
   count: number; // Current count value
   username: string | null | undefined; // Username of the user or friend
+  setShowCanvas: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 // Define the props interface for pushup-related properties
@@ -18,7 +19,7 @@ interface pushupProps {
 type Props = WebcamFeedProps & pushupProps
 
 // WebcamFeed component definition
-const WebcamFeed = ({ onFrame, setCount, count, username }: Props) => {
+const WebcamFeed = ({ onFrame, setCount, count, username, setShowCanvas }: Props) => {
   // Reference to the Webcam component
   const webcamRef = useRef<Webcam>(null);
   
@@ -49,6 +50,7 @@ const WebcamFeed = ({ onFrame, setCount, count, username }: Props) => {
     if (webcamRef.current && webcamRef.current.stream) {
       webcamRef.current.stream.getTracks().forEach(track => track.stop());
       setIsWebcamOn(false); // Update the state to indicate the webcam is off
+      setShowCanvas(false);
     }
 
     setCount(0); // Reset the count to 0
@@ -72,6 +74,7 @@ const WebcamFeed = ({ onFrame, setCount, count, username }: Props) => {
   // Function to turn on the webcam
   const turnOnWebcam = () => {
     setIsWebcamOn(true); // Update the state to indicate the webcam is on
+    setShowCanvas(true)
   };
 
   // Render the webcam feed or a placeholder depending on the webcam state
