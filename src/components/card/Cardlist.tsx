@@ -15,12 +15,14 @@ const CardList = () => {
                 </CardContent>
             </Card>
         </Link>
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center gap-4 pt-12">
-            <SquircleIcon className="h-12 w-12 text-primary" />
-            <h3 className="text-lg font-medium">Squats</h3>
-          </CardContent>
-        </Card>
+        <Link href="/dashboard/exercises/squats">
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center gap-4 pt-12">
+              <SquircleIcon className="h-12 w-12 text-primary" />
+              <h3 className="text-lg font-medium">Squats</h3>
+            </CardContent>
+          </Card>
+        </Link>
         <Card>
           <CardContent className="flex flex-col items-center justify-center gap-4 pt-12">
             <DumbbellIcon className="h-12 w-12 text-primary" />
