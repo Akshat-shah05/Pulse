@@ -17,8 +17,8 @@ const isSquat = (pose: Pose[]): boolean => {
     const rightKnee = keypoints.find(point => point.name === 'right_knee');
 
     if (leftHip && rightHip && leftKnee && rightKnee) {
-      const isDownPosition = leftHip.y > leftKnee.y && rightHip.y > rightKnee.y;
-      const isUpPosition = leftHip.y < leftKnee.y && rightHip.y < rightKnee.y;
+      const isUpPosition = leftHip.y > leftKnee.y && rightHip.y > rightKnee.y;
+      const isDownPosition = leftHip.y < leftKnee.y && rightHip.y < rightKnee.y;
       return isDownPosition && isUpPosition;
     }
   }
