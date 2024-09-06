@@ -79,7 +79,7 @@ const Dashboard = ({ username }: userProps) => {
         loading ? 
         (
           // Display loading spinner while loading
-          <div className="h-screen bg-background flex flex-col justify-center items-center">
+          <div className="h-screen bg-gray-100 flex flex-col justify-center items-center">
             <div
               className="p-4 animate-spin drop-shadow-2xl bg-gradient-to-bl text-black from-pink-400 via-purple-400 to-indigo-600 h-60 w-60 aspect-square rounded-full"
             >
@@ -90,7 +90,7 @@ const Dashboard = ({ username }: userProps) => {
         (
           <>
             {/* Main dashboard content */}
-            <div className="flex min-h-screen w-full flex-col bg-background items-center">
+            <div className="flex min-h-screen w-full flex-col bg-gray-100 items-center">
               <Navbar username={username}/> {/* Render the navigation bar */}
               <h1 className="text-4xl flex flex-row justify-center mt-5"> Welcome {username}</h1> {/* Welcome message */}
               <h2 className="text-primary text-2xl flex flex-row justify-center mt-5"> Start by choosing an exercise</h2> {/* Instruction */}

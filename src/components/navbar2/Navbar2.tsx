@@ -28,7 +28,7 @@ const Navbar2 = () => {
                 <Link href="/dashboard" className="text-primary" prefetch={false}>
                 Home
                 </Link>
-                <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+                <Link href="/dashboard/leaderboard" className="text-muted-foreground hover:text-foreground" prefetch={false}>
                 Leaderboards
                 </Link>
                 <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
