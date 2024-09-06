@@ -4,6 +4,7 @@ import { getSocket } from '@/socket';
 import { useRouter } from 'next/navigation'; 
 import React, { useEffect, useState } from 'react'; 
 import { Socket } from 'socket.io-client'; 
+import Navbar2 from '../navbar/Navbar';
 
 // Define the props interface for the Multiplayer component
 interface userProps {
@@ -81,25 +82,31 @@ const Multiplayer = ({ username }: userProps) => {
 
     // Render the component
     return (
-        <div>
-            {/* Display connection status */}
-            <p>Status: {isConnected ? "connected" : "disconnected"}</p>
-            {/* Input field for entering friend's username */}
-            <input
-                type="text"
-                placeholder="Enter friend's username"
-                value={friendUsername}
-                onChange={(e) => setFriendUsername(e.target.value)} // Update state with input value
-                disabled={requestSent} // Disable input if a request has been sent
-            />
-            {/* Button to send game request */}
-            <button onClick={sendGameRequest} disabled={requestSent}>
-                Send Game Request
-            </button>
+        <>
+            <Navbar2 username={username}/>
+            <h1></h1>
+            <div className="flex flex-row justify-center items-center h-screen">
+                {/* Display connection status */}
+                <div className="flex flex-col">
+                    <p>Status: {isConnected ? "connected" : "disconnected"}</p>
+                    {/* Input field for entering friend's username */}
+                    <input
+                        type="text"
+                        placeholder="Enter friend's username"
+                        value={friendUsername}
+                        onChange={(e) => setFriendUsername(e.target.value)} // Update state with input value
+                        disabled={requestSent} // Disable input if a request has been sent
+                    />
+                    {/* Button to send game request */}
+                    <button onClick={sendGameRequest} disabled={requestSent}>
+                        Send Game Request
+                    </button>
 
-            {/* Display error message if any */}
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        </div>
+                    {/* Display error message if any */}
+                    {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                </div>
+            </div>
+        </>
     );
 }
 
