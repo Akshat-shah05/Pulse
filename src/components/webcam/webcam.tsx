@@ -9,11 +9,11 @@ interface WebcamFeedProps {
   setShowCanvas: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface exerciseProps {
+interface ExerciseProps {
   username: string | null | undefined;
 }
 
-type Props = WebcamFeedProps & exerciseProps;
+type Props = WebcamFeedProps & ExerciseProps;
 
 const WebcamFeed = ({ onFrame, setCount, count, username, setShowCanvas }: Props) => {
   const webcamRef = useRef<Webcam>(null);
@@ -22,6 +22,14 @@ const WebcamFeed = ({ onFrame, setCount, count, username, setShowCanvas }: Props
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const [showAnalyzeButton, setShowAnalyzeButton] = useState(false);
+
+  useEffect(() => {
+    if (isWebcamOn) {
+      startRecording();
+    } else {
+      stopRecording();
+    }
+  }, [isWebcamOn]);
 
   useEffect(() => {
     if (!isWebcamOn) return;
@@ -37,27 +45,44 @@ const WebcamFeed = ({ onFrame, setCount, count, username, setShowCanvas }: Props
   }, [onFrame, isWebcamOn]);
 
   const startRecording = () => {
-    if (webcamRef.current && webcamRef.current.stream) {
-      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-        mimeType: 'video/webm',
-      });
-      mediaRecorderRef.current.addEventListener('dataavailable', handleDataAvailable);
-      mediaRecorderRef.current.start();
-      setIsRecording(true);
+    if (webcamRef.current) {
+      const stream = webcamRef.current.video?.srcObject as MediaStream;
+      if (stream) {
+        console.log("Starting recording...");
+        mediaRecorderRef.current = new MediaRecorder(stream, {
+          mimeType: 'video/webm',
+        });
+        mediaRecorderRef.current.addEventListener('dataavailable', handleDataAvailable);
+        mediaRecorderRef.current.addEventListener('stop', handleStopRecording);
+        mediaRecorderRef.current.start();
+        setIsRecording(true);
+      } else {
+        console.error("Webcam stream is not available.");
+      }
+    } else {
+      console.error("Webcam reference is not available.");
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current) {
+    if (mediaRecorderRef.current && isRecording) {
+      console.log("Stopping recording...");
       mediaRecorderRef.current.stop();
       setIsRecording(false);
+    } else {
+      console.error("MediaRecorder is not available or already stopped.");
     }
   };
 
   const handleDataAvailable = (event: BlobEvent) => {
     if (event.data.size > 0) {
-      setRecordedChunks((prev) => [...prev, event.data]);
+      setRecordedChunks(prev => [...prev, event.data]);
     }
+  };
+
+  const handleStopRecording = () => {
+    // Handle the recording stop
+    // You can also handle further processing or resetting recorded chunks here
   };
 
   const turnOffWebcam = async () => {
@@ -90,12 +115,13 @@ const WebcamFeed = ({ onFrame, setCount, count, username, setShowCanvas }: Props
     setShowCanvas(true);
     setRecordedChunks([]);
     setShowAnalyzeButton(false);
-    startRecording();
   };
 
   const analyzeWorkout = async () => {
-    if (recordedChunks.length === 0) return;
-
+    if (recordedChunks.length === 0) {
+      console.log("No video data available");
+      return;
+    }
     const blob = new Blob(recordedChunks, { type: 'video/webm' });
     const formData = new FormData();
     formData.append('video', blob, 'workout.webm');
@@ -121,10 +147,14 @@ const WebcamFeed = ({ onFrame, setCount, count, username, setShowCanvas }: Props
   return (
     <div className="flex flex-col">
       {isWebcamOn ? (
-        <Webcam className="rounded-lg" ref={webcamRef} />
+        <Webcam
+          className="rounded-lg"
+          ref={webcamRef}
+          onUserMedia={(stream) => console.log("Stream available")}
+        />
       ) : (
         <div className="h-96 w-96 bg-background border border-primary flex flex-row justify-center items-center text-4xl rounded-lg">
-          webcam off
+          Webcam off
         </div>
       )}
       <button
