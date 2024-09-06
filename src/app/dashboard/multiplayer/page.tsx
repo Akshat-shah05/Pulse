@@ -14,7 +14,6 @@ const page = async () => {
         })
         email = person?.username;
     }
-  
 
   return (
     <div>
