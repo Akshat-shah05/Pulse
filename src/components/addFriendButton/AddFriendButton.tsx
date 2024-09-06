@@ -11,92 +11,130 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal, CheckCircle, XCircle } from 'lucide-react';
 
-// Props that will be passed to the button, handling for opening and closing the input field for adding a friend
+// Props for controlling the input field visibility and alert display
 interface ButtonProps {
-  open: boolean,
-  setOpen: Dispatch<SetStateAction<boolean>>,
-};
-
-// Props for accepting the username from Navbar.tsx
-interface userProps {
-  username: string | null | undefined
-};
-
-const AddFriendButton = ({username}: userProps) => {
-  // check if input is open or not
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-
-  // close input on click
-  const handleClick = () => {
-    setModalOpen(!modalOpen);
-    console.log(username);
-  }
-
-  // component 
-  return (
-    <div className="flex flex-col"> 
-        {modalOpen 
-        ? 
-        <div className="flex flex-row items-center">
-          <AddFriendForm open={modalOpen} setOpen={setModalOpen} username={username}/>
-          <Button variant="ghost" className="mr-5" size="xs" onClick={handleClick}> X </Button>
-        </div>
-        : 
-        <Button variant="rainbow" size="sm" onClick={handleClick}> Add a Friend </Button>
-        }
-    </div>
-  )
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  setAlertShown: Dispatch<SetStateAction<boolean>>;
+  setAlertMessage: Dispatch<SetStateAction<string>>;
+  setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }
 
-// Zod form schema
+// Props for receiving the username from another component (Navbar.tsx)
+interface userProps {
+  username: string | null | undefined;
+}
+
+const AddFriendButton = ({ username }: userProps) => {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [alertShown, setAlertShown] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
+
+  // Function to toggle the modal open/close when the button is clicked
+  const handleClick = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  return (
+    <div className="flex flex-col">
+      {/* Render the alert outside the modal so it persists after form close */}
+      {alertShown && (
+          <div className={`fixed top-5 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md`}>
+            <Alert variant={isSuccess ? "default" : "destructive"}>
+              {isSuccess ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
+              <AlertTitle>{isSuccess ? "Success!" : "Error!"}</AlertTitle>
+              <AlertDescription>{alertMessage}</AlertDescription>
+            </Alert>
+          </div>
+      )}
+
+      {modalOpen ? (
+        <div className="flex flex-row items-center">
+          <AddFriendForm
+            open={modalOpen}
+            setOpen={setModalOpen}
+            username={username}
+            setAlertShown={setAlertShown}
+            setAlertMessage={setAlertMessage}
+            setIsSuccess={setIsSuccess}
+          />
+          <Button variant="ghost" className="mr-5" size="xs" onClick={handleClick}>
+            X
+          </Button>
+        </div>
+      ) : (
+        <Button variant="rainbow" size="sm" onClick={handleClick}>
+          Add a Friend
+        </Button>
+      )}
+    </div>
+  );
+};
+
+// Zod form schema for validation
 const FormSchema = z.object({
-    friendUsername: z.string(),
-    username: z.any()
+  friendUsername: z.string().min(1, "Friend username is required."),
+  username: z.any(),
 });
 
-// Intersection between props - clean solution to types being annoying asl
+// Type intersection for props to pass between components
 type Props = ButtonProps & userProps;
 
-// component for form
-const AddFriendForm = ({open, setOpen, username}: Props) => {
-
-  // zod form
+// Component for the actual Add Friend form
+const AddFriendForm = ({
+  open,
+  setOpen,
+  username,
+  setAlertShown,
+  setAlertMessage,
+  setIsSuccess,
+}: Props) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       friendUsername: "",
-      username: username // username is the default value (current session username), there is not set form for it, just need it to pass it to the route
+      username: username,
     },
   });
 
-  // zod submit, sends POST request to /api/friends/add to add a friend
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    setOpen(!open)
-    const response = await fetch("/api/friends/add", {
-      method: "POST", 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        friend: values.friendUsername, // username of the friend that you are adding from input
-        username: values.username // username received as props, current session username
-      })
-    });
+    setOpen(!open);
+    try {
+      const response = await fetch("/api/friends/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          friend: values.friendUsername,
+          username: values.username,
+        }),
+      });
 
-    if(response.ok) {
-        // Make this specific to the response message of course, this is is fine for now though
-        form.reset();
-        alert("Success!");
-    } else {
-        // Use react alert to make an error pop up, and then reset form
-        // Make this specific to the response message of course, this is is fine for now though
-        form.reset();
-        alert("Failure");
+      if (response.ok) {
+        setIsSuccess(true);
+        setAlertMessage("Friend added successfully!");
+      } else {
+        setIsSuccess(false);
+        setAlertMessage("Failed to add friend. Please try again.");
+      }
+    } catch (error) {
+      setIsSuccess(false);
+      setAlertMessage("An error occurred. Please try again.");
     }
-  }
 
-  // Zod Form
+    setAlertShown(true);
+    form.reset();
+
+    setTimeout(() => {
+      setAlertShown(false);
+    }, 3500);
+  };
+
   return (
     <Form {...form}>
       <div className="flex flex-row items-center">
@@ -104,24 +142,26 @@ const AddFriendForm = ({open, setOpen, username}: Props) => {
           <div className="flex flex-row items-center">
             <FormField
               control={form.control}
-              name='friendUsername'
+              name="friendUsername"
               render={({ field }) => (
-              <FormItem>
+                <FormItem>
                   <FormControl>
-                      <div className="text-black"> <Input placeholder='add a friend'  className="w-100" {...field} /> </div>
+                    <div className="text-black">
+                      <Input placeholder="add a friend" className="w-100" {...field} />
+                    </div>
                   </FormControl>
                   <FormMessage />
-              </FormItem>
+                </FormItem>
               )}
             />
-            <Button variant="rainbow" size="sm" className="px-6 ml-6 mr-1" type='submit'>
-            Add
+            <Button variant="rainbow" size="sm" className="px-6 ml-6 mr-1" type="submit">
+              Add
             </Button>
           </div>
         </form>
       </div>
     </Form>
-  )
-}
+  );
+};
 
-export default AddFriendButton
+export default AddFriendButton;
