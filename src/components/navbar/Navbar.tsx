@@ -27,7 +27,7 @@ const Navbar = ({username}: Props) => {
     <header className="sticky top-0 z-40 w-full border-b bg-background">
         <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-4 text-sm font-medium">
-                <Link href="#" className="text-primary" prefetch={false}>
+                <Link href="/dashboard" className="text-primary" prefetch={false}>
                 Home
                 </Link>
                 <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
