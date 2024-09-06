@@ -12,17 +12,17 @@ export async function POST (req: Request) {
 
     // run db query
     try {
-        const updatedUser = await db.user.update({
-          where: {
-            username: userId,
+      const updatedUser = await db.user.update({
+        where: {
+          username: userId,
+        },
+        data: {
+          pushupsAllTime: {
+            increment: incrementBy,
           },
-          data: {
-            pushupsAllTime: {
-              increment: incrementBy,
-            },
-          },
-        });
-        return NextResponse.json({ updatedUser: updatedUser, message: "User updated Successfully" }, {status: 201})
+        },
+      });
+      return NextResponse.json({ updatedUser: updatedUser, message: "User updated Successfully" }, {status: 201})
     } catch(error) {
         console.log(error)
         return NextResponse.json({error: "something went wrong"})
