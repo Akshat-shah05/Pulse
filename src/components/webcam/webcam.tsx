@@ -1,98 +1,146 @@
 import React, { useRef, useEffect, useState, Dispatch, SetStateAction } from 'react';
 import Webcam from 'react-webcam';
 
-// Define the props interface for the WebcamFeed component
 interface WebcamFeedProps {
-  onFrame: (video: HTMLVideoElement) => void; // Function to handle the video frame
-  setCount: Dispatch<SetStateAction<number>>; // Function to update the count state
-  count: number; // Current count value
-  username: string | null | undefined; // Username of the user or friend
-  setShowCanvas: React.Dispatch<React.SetStateAction<boolean>>
+  onFrame: (video: HTMLVideoElement) => void;
+  setCount: Dispatch<SetStateAction<number>>;
+  count: number;
+  username: string | null | undefined;
+  setShowCanvas: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// Define the props interface for pushup-related properties
-interface pushupProps {
-  username: string | null | undefined; // Username of the user or friend
+interface exerciseProps {
+  username: string | null | undefined;
 }
 
-// Combine both props interfaces into a single Props type
-type Props = WebcamFeedProps & pushupProps
+type Props = WebcamFeedProps & exerciseProps;
 
-// WebcamFeed component definition
 const WebcamFeed = ({ onFrame, setCount, count, username, setShowCanvas }: Props) => {
-  // Reference to the Webcam component
   const webcamRef = useRef<Webcam>(null);
-  
-  // State to track whether the webcam is on or off
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const [isWebcamOn, setIsWebcamOn] = useState(true);
+  const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
+  const [isRecording, setIsRecording] = useState(false);
+  const [showAnalyzeButton, setShowAnalyzeButton] = useState(false);
 
-  // Effect hook to handle frame capture when the webcam is on
   useEffect(() => {
-    // If the webcam is off, exit early
     if (!isWebcamOn) return;
 
-    // Set up an interval to periodically check the video stream
     const interval = setInterval(() => {
-      // Check if the webcam reference is valid and the video is ready
       if (webcamRef.current && webcamRef.current.video?.readyState === 4) {
         const video = webcamRef.current.video as HTMLVideoElement;
-        onFrame(video); // Call the onFrame function with the current video element
+        onFrame(video);
       }
-    }, 100); // Check every 100 milliseconds
+    }, 100);
 
-    // Cleanup the interval on component unmount or when the webcam state changes
     return () => clearInterval(interval);
   }, [onFrame, isWebcamOn]);
 
-  // Function to turn off the webcam and submit the exercise data
-  const turnOffWebcam = async () => {
-    // Stop all tracks in the webcam stream to turn off the webcam
+  const startRecording = () => {
     if (webcamRef.current && webcamRef.current.stream) {
-      webcamRef.current.stream.getTracks().forEach(track => track.stop());
-      setIsWebcamOn(false); // Update the state to indicate the webcam is off
+      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+        mimeType: 'video/webm',
+      });
+      mediaRecorderRef.current.addEventListener('dataavailable', handleDataAvailable);
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handleDataAvailable = (event: BlobEvent) => {
+    if (event.data.size > 0) {
+      setRecordedChunks((prev) => [...prev, event.data]);
+    }
+  };
+
+  const turnOffWebcam = async () => {
+    stopRecording();
+    if (webcamRef.current && webcamRef.current.stream) {
+      webcamRef.current.stream.getTracks().forEach((track) => track.stop());
+      setIsWebcamOn(false);
       setShowCanvas(false);
     }
 
-    setCount(0); // Reset the count to 0
+    setCount(0);
 
-    // Make a POST request to update the exercise data on the server
     const response = await fetch('/api/user/updateExercise', {
-      method: "POST",
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: username, // Username of the user whose exercise data is being updated
-        incrementBy: count // The count of exercises performed
-      })
+        userId: username,
+        incrementBy: count,
+      }),
     });
 
-    // Log the server response for debugging purposes
     console.log(response);
+    setShowAnalyzeButton(true);
   };
 
-  // Function to turn on the webcam
   const turnOnWebcam = () => {
-    setIsWebcamOn(true); // Update the state to indicate the webcam is on
-    setShowCanvas(true)
+    setIsWebcamOn(true);
+    setShowCanvas(true);
+    setRecordedChunks([]);
+    setShowAnalyzeButton(false);
+    startRecording();
   };
 
-  // Render the webcam feed or a placeholder depending on the webcam state
+  const analyzeWorkout = async () => {
+    if (recordedChunks.length === 0) return;
+
+    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+    const formData = new FormData();
+    formData.append('video', blob, 'workout.webm');
+
+    try {
+      const response = await fetch('/api/analyze/pushup', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Analysis result:', result);
+        // Handle the analysis result (e.g., display it to the user)
+      } else {
+        console.error('Failed to analyze workout');
+      }
+    } catch (error) {
+      console.error('Error analyzing workout:', error);
+    }
+  };
+
   return (
     <div className="flex flex-col">
       {isWebcamOn ? (
-        // Display the webcam feed if the webcam is on
         <Webcam className="rounded-lg" ref={webcamRef} />
       ) : (
-        // Display a placeholder when the webcam is off
         <div className="h-96 w-96 bg-background border border-primary flex flex-row justify-center items-center text-4xl rounded-lg">
           webcam off
         </div>
       )}
-      {/* Button to toggle between turning the webcam on and off */}
-      <button onClick={isWebcamOn ? turnOffWebcam : turnOnWebcam} className="mt-4 bg-red-500 text-white p-2 rounded-lg">
-        {isWebcamOn ? "Submit your Score!" : "Start a New Round"}
+      <button
+        onClick={isWebcamOn ? turnOffWebcam : turnOnWebcam}
+        className="mt-4 bg-red-500 text-white p-2 rounded-lg"
+      >
+        {isWebcamOn ? 'Submit your Score!' : 'Start a New Round'}
       </button>
+      {showAnalyzeButton && (
+        <button
+          onClick={analyzeWorkout}
+          className="mt-4 bg-blue-500 text-white p-2 rounded-lg"
+        >
+          Analyze Workout
+        </button>
+      )}
     </div>
   );
 };
