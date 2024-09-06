@@ -9,7 +9,6 @@ const page = async () => {
     let email = user?.user?.email;
     let friends;
     let friendRequests;
-    console.log(email);
 
     // if email exists, replace email with the associated username
     if(email) {
