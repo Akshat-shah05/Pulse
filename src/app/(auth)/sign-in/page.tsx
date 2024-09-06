@@ -1,5 +1,4 @@
 import SignInForm from '@/components/form/SignInForm';
-import { motion } from 'framer-motion'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 

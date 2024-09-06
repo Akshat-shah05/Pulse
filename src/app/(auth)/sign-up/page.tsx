@@ -1,5 +1,4 @@
 import SignUpForm from '@/components/form/SignUpForm';
-import { motion } from 'framer-motion'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
