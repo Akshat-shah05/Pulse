@@ -3,6 +3,9 @@
 ### Watch a short little demo here :) https://youtu.be/GqNxkKXEF_w
 (Video demonstrating Multiplayer function coming soon)
 
+## System Design 
+![alt text](https://github.com/[Akshat-shah05]/[Pulse]/blob/[main]/image.jpg?raw=true)
+
 ## Inspiration 💡💭
 The inspiration for this project was really just wanting a tool that would motivate me to workout, EVEN during those days where I really don't want to go to the gym. Recently, with working so much and being burntout, the gym has gone from something I did for fun and growth, to another chore that I feel forced/obligated to do. I wanted to use my passion for programming to create a solution to this motivation issue. If I had a system that would let me workout with others (my favourite part of goint to the gym), from home, I could stay active even on those not-so-good days. This led to the eventual production of Pulse, an application where you can compete against your friends in real-time exercises to workout from the comfort of you home, perfect for those days where you really can't push yourself to go to the gym.
 
